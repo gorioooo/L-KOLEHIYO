@@ -5,11 +5,12 @@
 h2 {
     color: white;
 }
-form {
+
+input {
     color: white;
 }
 
 button {
     color: white;
-    border-color: white;
+    position: absolute;
 }
