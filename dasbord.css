@@ -2,7 +2,7 @@
 * {
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
+    box-sizing: auto;
 }
 .main-container {
     font-family: poppins;
@@ -12,8 +12,8 @@
     background-repeat: no-repeat;
     background-color: #f2f2f2;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
     margin: 0;
 }
@@ -22,6 +22,7 @@
     background-image: url("./img/bg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    background-size: fit;
     opacity: 0.75;
 }
 
@@ -65,15 +66,14 @@ nav ul li a {
 
 .parent-container {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100px; /* Adjust the container height as needed */
+    justify-content: center; 
+    align-items: center;
+    height: 100px; 
 }
 
-/* Adjust the CSS for the image */
 img {
     height: 250px;
-    margin-bottom: 20px; /* Add spacing between logo and login form */
+    margin-bottom: 20px; 
 }
 
 .submit {
@@ -99,5 +99,11 @@ p {
 
 input::placeholder {
     text-align: center;
-    border-radius: 30%;
+}
+
+input{
+    border-radius: 20px;
+    height: 30px;
+    font-family: poppins;
+    width: auto;
 }

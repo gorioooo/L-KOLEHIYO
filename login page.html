@@ -8,7 +8,7 @@
 <body>
     <div class="main-container">
         <div class="login-container">
-            <img src="./img/logo.jpg" alt="Description of the image">
+            <img src="./img/logo.jpg" alt="letran-logo">
             <h2>WELCOME BACK!</h2>
             <p>Login to your account</p>
             <form id="login-form" onsubmit="return validateForm()">
@@ -20,19 +20,25 @@
     </div>
 
     <script>
-        function validateForm() {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
+            document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
 
-            // Simple validation (replace with proper backend validation)
+            loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+        
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+
             if (username === "admin" && password === "admin") {
-                alert("Login successful!");
-                return true;
+            
+            window.location.href = 'homepage.html';
             } else {
-                document.getElementById("error-message").innerHTML = "Invalid username or password.";
-                return false;
-            }
-        }   
+            alert('Invalid username or password. Please try again.');
+        }
+    });
+});
     </script>
 </body>
 </html>
