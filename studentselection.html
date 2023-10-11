@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+</head>
+    <link rel="stylesheet" href="studentselection.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <body>
+        <div class="container">
+            <div class="column">
+                <h1>Student</h1>
+                <form id="studentForm">
+                    <label for="name">Student Name:</label>
+                    <input type="text" id="name" name="name" required>
+    
+                    <label for="grade">Grade:</label>
+                    <input type="text" id="grade" name="grade" required>
+    
+                    <label for="section">Section:</label>
+                    <input type="text" id="section" name="section" required>
+    
+                    <label for="strand">Strand:</label>
+                    <input type="text" id="strand" name="strand" required>
+    
+                    <button type="button" onclick="addOrUpdateStudent()">Add Student</button>
+                    <input type="hidden" id="editIndex" value="-1">
+                </form>
+            </div>
+            <div class="column">
+                <h1>Old Students</h1>
+                <table id="studentTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Grade</th>
+                        <th>Section</th>
+                        <th>Strand</th>
+                        <th>Action</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+        <script>
+            function addOrUpdateStudent() {
+                const name = document.getElementById("name").value;
+                const grade = document.getElementById("grade").value;
+                const section = document.getElementById("section").value;
+                const strand = document.getElementById("strand").value;
+                const table = document.getElementById("studentTable");
+                const editIndex = document.getElementById("editIndex").value;
+    
+                if (editIndex === "-1") {
+                    // Add a new student
+                    const row = table.insertRow(1);
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    const cell3 = row.insertCell(2);
+                    const cell4 = row.insertCell(3);
+                    const cell5 = row.insertCell(4);
+    
+                    cell1.innerHTML = '<span>' + name + '</span><input type="text" value="' + name + '">';
+                    cell2.innerHTML = '<span>' + grade + '</span><input type="text" value="' + grade + '">';
+                    cell3.innerHTML = '<span>' + section + '</span><input type="text" value="' + section + '">';
+                    cell4.innerHTML = '<span>' + strand + '</span><input type="text" value="' + strand + '">';
+                    cell5.innerHTML = '<button onclick="editStudent(this)">Edit</button>';
+                } else {
+                    // Update the existing student
+                    const row = table.rows[parseInt(editIndex) + 1];
+                    row.cells[0].innerHTML = '<span>' + name + '</span><input type="text" value="' + name + '">';
+                    row.cells[1].innerHTML = '<span>' + grade + '</span><input type="text" value="' + grade + '">';
+                    row.cells[2].innerHTML = '<span>' + section + '</span><input type="text" value="' + section + '">';
+                    row.cells[3].innerHTML = '<span>' + strand + '</span><input type="text" value="' + strand + '">';
+                    row.cells[4].innerHTML = '<button onclick="editStudent(this)">Edit</button>';
+                    document.getElementById("editIndex").value = -1;
+                }
+    
+                document.getElementById("studentForm").reset();
+            }
+    
+            function editStudent(button) {
+                const table = document.getElementById("studentTable");
+                const row = button.parentNode.parentNode;
+                const rowIndex = row.rowIndex - 1; // Subtract 1 for the header row
+    
+                // Make the row editable
+                for (let i = 0; i < 4; i++) {
+                    const cell = row.cells[i];
+                    cell.classList.add("editable");
+                }
+    
+                // Switch to edit mode
+                row.classList.add("editing");
+    
+                // Update the Edit button to Save
+                button.innerHTML = "Save";
+                button.onclick = function () {
+                    saveStudent(this);
+                };
+    
+                document.getElementById("name").value = row.cells[0].querySelector("input").value;
+                document.getElementById("grade").value = row.cells[1].querySelector("input").value;
+                document.getElementById("section").value = row.cells[2].querySelector("input").value;
+                document.getElementById("strand").value = row.cells[3].querySelector("input").value;
+    
+                document.getElementById("editIndex").value = rowIndex;
+            }
+    
+            function saveStudent(button) {
+                const row = button.parentNode.parentNode;
+    
+                // Make the row non-editable
+                for (let i = 0; i < 4; i++) {
+                    const cell = row.cells[i];
+                    cell.classList.remove("editable");
+                }
+    
+                // Switch back to non-edit mode
+                row.classList.remove("editing");
+    
+                // Update the Save button back to Edit
+                button.innerHTML = "Edit";
+                button.onclick = function () {
+                    editStudent(this);
+                };
+    
+                addOrUpdateStudent(); // Call the same function to save changes
+            }
+        </script>
+    </body>
+</html>
