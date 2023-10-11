@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Grade Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .subject-input {
+            width: 100%;
+        }
+        .subject-list {
+            list-style: none;
+            padding: 0;
+        }
+        .subject-list-item {
+            margin-top: 10px;
+        }
+        .remove-subject {
+            color: red;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Student Grades</h1>
+        <form id="grade-form">
+            <label for="student-name">Student Name</label>
+            <input type="text" id="student-name" required>
+            
+            <label for="grades">Grades</label>
+            <ul id="subject-list" class="subject-list">
+                <!-- Subject Input Fields Will Be Dynamically Added Here -->
+            </ul>
+            <button type="button" id="add-subject">Add Subject</button>
+            
+            <input type="submit" value="Add Grades">
+        </form>
+        
+        <!-- Subjects Table -->
+        <h2>Subjects</h2>
+        <table id="subjects-table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Subjects will be displayed here -->
+            </tbody>
+        </table>
+
+        <!-- Grades Table -->
+        <h2>Grades</h2>
+        <table id="grades-table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Subject 1</th>
+                    <th>Subject 2</th>
+                    <!-- Add more subject headers as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Student grades will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        const addSubjectButton = document.getElementById('add-subject');
+        const subjectList = document.getElementById('subject-list');
+        let subjectCount = 0;
+        
+        addSubjectButton.addEventListener('click', function() {
+            const subjectInput = document.createElement('li');
+            subjectInput.classList.add('subject-list-item');
+            subjectInput.innerHTML = `
+                <input type="number" name="subject${subjectCount + 1}" min="0" max="100" placeholder="Subject ${subjectCount + 1}" required>
+                <span class="remove-subject" data-index="${subjectCount}">Remove</span>
+            `;
+            subjectList.appendChild(subjectInput);
+            subjectCount++;
+        });
+
+        subjectList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-subject')) {
+                const subjectIndex = e.target.getAttribute('data-index');
+                const subjectInput = document.querySelector(`input[name="subject${subjectIndex + 1}"]`);
+                if (subjectInput) {
+                    subjectList.removeChild(subjectInput.parentElement);
+                    subjectCount--;
+                }
+            }
+        });
+
+        document.getElementById('grade-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentName = document.getElementById('student-name').value;
+            const subjectGrades = [];
+
+            // Prepare data for the Subjects table
+            const subjectsTable = document.getElementById('subjects-table');
+            const subjectsTableRow = subjectsTable.querySelector('tbody').insertRow();
+            subjectsTableRow.insertCell().textContent = studentName;
+            for (let i = 1; i <= subjectCount; i++) {
+                const gradeInput = document.querySelector(`input[name="subject${i}`);
+                const gradeValue = gradeInput.value;
+                subjectsTableRow.insertCell().textContent = gradeValue;
+                if (gradeValue) {
+                    subjectGrades.push({ subject: `Subject ${i}`, grade: gradeValue });
+                    gradeInput.value = ''; // Clear input field
+                }
+            }
+            
+            if (studentName && subjectGrades.length > 0) {
+                const gradesTable = document.getElementById('grades-table');
+                const gradesTableRow = gradesTable.querySelector('tbody').insertRow();
+                gradesTableRow.insertCell().textContent = studentName;
+                for (const grade of subjectGrades) {
+                    gradesTableRow.insertCell().textContent = grade.grade;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
