@@ -17,12 +17,12 @@ body {
     width: 250px;
     position: absolute;
     background-color: #002145;
-    padding-top: 60px;
+    padding-top: 130px;
     transition: 0.3s;
 }
 
 .sidenav a {
-    padding: 60px 40px;
+    padding: 70px 50px;
     text-decoration: none;
     font-size: 30px;
     color: white;    
